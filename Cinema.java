@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Cinema {
     static Scanner sc = new Scanner(System.in);
+    static boolean exit = true;
     static public int n;
     static public int m;
     static public int x;
@@ -12,11 +13,8 @@ public class Cinema {
     static char[][] array;
     static int amount;
     public static void main(String[] args) {
-        boolean exit = true;
         menuCinema();
-        System.out.println("a");
         fill();
-        System.out.println("v");
         while (exit) {
             System.out.println();
             System.out.println("1. Show the seats");
@@ -35,7 +33,6 @@ public class Cinema {
                     break;
             }
         }
-
     }
     public static void sold() {
         amount = n * m;
@@ -79,10 +76,11 @@ public class Cinema {
         x = sc.nextInt();
         System.out.println("Enter a seat number in that row: ");
         y = sc.nextInt();
+        array[x-1][y-1] = 'B';
         System.out.println();
         System.out.println("Ticket price: $" + ticketPrice());
         System.out.println();
-        boughtTicket();
+        readRoom();
     }
     static public void readRoom() {
         System.out.println();
@@ -106,24 +104,6 @@ public class Cinema {
             Arrays.fill(chars, 'S');
         }
     }
-    static public void boughtTicket() {
-        System.out.println("Cinema:");
-        System.out.print("  ");
-        for (int i = 1; i <= m; i++) {
-            System.out.print( i + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < n; i++) {
-            System.out.print(i+1 + " ");
-            for (int j = 0; j < m; j++) {
-                array[x-1][y-1] = 'B';
-                array[x-1][y-1] = array[i][j];
-                System.out.print(array[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
     static public int ticketPrice() {
         int ticketP = 0;
         amount = n * m;
