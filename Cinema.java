@@ -49,43 +49,52 @@ public class Cinema {
     public static void stats() {
         amount = n * m;
         totalPrice = 0;
-        System.out.println("Number of purchased tickets: " + Cinema.tickets);
-        System.out.println("Percentage: " + String.format("%.2f",Cinema.percent) + "%");
-        System.out.println("Current income: $" + Cinema.income);
+        System.out.println("Number of purchased tickets: " + tickets);
+        System.out.println("Percentage: " + String.format("%.2f",percent) + "%");
+        System.out.println("Current income: $" + income);
         System.out.println("Total income: $" + totalIncome());
 
     }
     public static void menuCinema() {
-        System.out.println("Enter the number of rows: ");
+        System.out.println("Enter the number of rows:");
         n = sc.nextInt();
-        System.out.println("Enter the number of seats in each row: ");
+        System.out.println("Enter the number of seats in each row:");
         m = sc.nextInt();
     }
     public static void buyTicket() {
+        boolean ask = true;
+        while (ask) {
         System.out.println();
-        System.out.println("Enter a row number: ");
+        System.out.println("Enter a row number:");
         x = sc.nextInt();
-        System.out.println("Enter a seat number in that row: ");
-        y = sc.nextInt();
-        try {
-            if (array[x-1][y-1] == 'B') {
-                System.out.println();
-                System.out.println("That ticket has already been purchased!");
-            } else {
-                Cinema.bought = true;
-                purchasedTickets();
-                incomeFromTicket();
-                Cinema.percent = (float) Cinema.tickets / amount;
-                Cinema.percent *= 100;
-                array[x-1][y-1] = 'B';
-                Cinema.bought = false;
+            System.out.println("Enter a seat number in that row:");
+            y = sc.nextInt();
+            try {
+                if (array[x-1][y-1] == 'B') {
+                    System.out.println();
+                    System.out.println("That ticket has already been purchased!");
+                } else {
+                    ask = false;
+                    bought = true;
+                    purchasedTickets();
+                    incomeFromTicket();
+                    percent = (float) tickets / amount;
+                    percent *= 100;
+                    array[x-1][y-1] = 'B';
+                    bought = false;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Wrong input!");
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Wrong input!");
         }
+
         System.out.println();
         System.out.println("Ticket price: $" + ticketPrice());
         System.out.println();
+    }
+    public static void askAgain() {
+        System.out.println("Enter a seat number in that row:");
+        y = sc.nextInt();
     }
     static public void readRoom() {
         System.out.println();
@@ -129,7 +138,7 @@ public class Cinema {
         amount = n * m;
         if (amount < 60){
             ticketP = 10;
-            Cinema.income = Cinema.income + ticketP;
+            income = income + ticketP;
         }
         if (amount > 60) {
             if (x <= 4) {
@@ -137,12 +146,12 @@ public class Cinema {
             }else {
                 ticketP = 8;
             }
-            Cinema.income = Cinema.income + ticketP;
+            income = income + ticketP;
         }
     }
     static public void purchasedTickets() {
         if (bought) {
-            Cinema.tickets++;
+            tickets++;
         }
     }
     static public int totalIncome() {
