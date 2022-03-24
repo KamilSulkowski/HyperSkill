@@ -3,6 +3,7 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
+    static boolean menu = true;
     static int CoC = 1;
     static int cCost;
     static int cWater;
@@ -15,46 +16,44 @@ public class CoffeeMachine {
     static int iMoney = 550;
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        CoffeeMachine.cCost = 0;
-        CoffeeMachine.cWater = 0;
-        CoffeeMachine.cMilk = 0;
-        CoffeeMachine.cCoffeeB = 0;
-        storageMachine();
-        System.out.println();
-        System.out.println("Write action (buy, fill, take): ");
-        String action = sc.nextLine();
-        switch (action) {
-            case "buy":
-                System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ");
-                int coffee = sc.nextInt();
-                switch (coffee) {
-                    case 1:
-                        espresso();
-                        makeCoffee();
-                        storageMachine();
-                        break;
-                    case 2:
-                        latte();
-                        makeCoffee();
-                        storageMachine();
-                        break;
-                    case 3:
-                        cappuccino();
-                        makeCoffee();
-                        storageMachine();
-                        break;
-                }
-                break;
-            case "fill":
-                addToMachine();
-                System.out.println();
-                storageMachine();
-                break;
-            case "take":
-                takeFromMachine();
-                System.out.println();
-                storageMachine();
-                break;
+        while (menu) {
+            CoffeeMachine.cCost = 0;
+            CoffeeMachine.cWater = 0;
+            CoffeeMachine.cMilk = 0;
+            CoffeeMachine.cCoffeeB = 0;
+            System.out.println("Write action (buy, fill, take, remaining, exit): ");
+            String action = sc.nextLine();
+            switch (action) {
+                case "buy":
+                    System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:  ");
+                    String coffee = sc.nextLine();
+                    switch (coffee) {
+                        case "1":
+                            espresso();
+                            break;
+                        case "2":
+                            latte();
+                            break;
+                        case "3":
+                            cappuccino();
+                            break;
+                        case "back":
+                            break;
+                    }
+                    break;
+                case "fill":
+                    addToMachine();
+                    break;
+                case "take":
+                    takeFromMachine();
+                    break;
+                case  "remaining":
+                    storageMachine();
+                    break;
+                case "exit":
+                    menu = false;
+                    break;
+            }
         }
         /*System.out.println("Starting to make a coffee");
         System.out.println("Grinding coffee beans");
@@ -73,23 +72,37 @@ public class CoffeeMachine {
         System.out.println(CoffeeMachine.CoC * CoffeeMachine.cCoffeeB + " g of coffee beans");
 
     }
+   static public void check() {
+       if (CoffeeMachine.cWater <= CoffeeMachine.iWater) {
+           if (CoffeeMachine.cMilk <= CoffeeMachine.iMilk) {
+               if (CoffeeMachine.cCoffeeB <= CoffeeMachine.iCoffeeB) {
+                   if (CoffeeMachine.iCups >= CoffeeMachine.CoC) {
+                       System.out.println("I have enough resources, making you a coffee!");
+                       makeCoffee();
+                   } else System.out.println("Sorry, not enough cups!");
+               } else System.out.println("Sorry, not enough coffee beans!");
+           } else System.out.println("Sorry, not enough milk!");
+       } else System.out.println("Sorry, not enough water!");
+   }
     static public void espresso() {
         CoffeeMachine.cWater = 250;
-        CoffeeMachine.cMilk = 0;
         CoffeeMachine.cCoffeeB = 16;
         CoffeeMachine.cCost = 4;
+        check();
     }
     static public void latte() {
         CoffeeMachine.cWater = 350;
         CoffeeMachine.cMilk = 75;
         CoffeeMachine.cCoffeeB = 20;
         CoffeeMachine.cCost = 7;
+        check();
     }
     static public void cappuccino() {
         CoffeeMachine.cWater = 200;
         CoffeeMachine.cMilk = 100;
         CoffeeMachine.cCoffeeB = 12;
         CoffeeMachine.cCost = 6;
+        check();
     }
     static public void makeCoffee() {
         CoffeeMachine.iWater -= CoffeeMachine.cWater;
@@ -99,10 +112,12 @@ public class CoffeeMachine {
         CoffeeMachine.iMoney += CoffeeMachine.cCost;
     }
     static public void takeFromMachine() {
+        System.out.println();
         System.out.println("I gave you $" + iMoney);
         iMoney -= iMoney;
     }
     static public void storageMachine() {
+        System.out.println();
         System.out.println("The coffee machine has:");
         System.out.println(CoffeeMachine.iWater + " ml of water");
         System.out.println(CoffeeMachine.iMilk + " ml of milk");
