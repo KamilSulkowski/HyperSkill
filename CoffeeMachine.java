@@ -3,28 +3,68 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
-    static int CoC;
-    static int cWater = 200;
-    static int cMilk = 50;
-    static int cCoffeeB = 15;
-    static int iWater = 0;
-    static int iMilk = 0;
-    static int iCoffeeB = 0;
+    static int CoC = 1;
+    static int cCost;
+    static int cWater;
+    static int cMilk;
+    static int cCoffeeB;
+    static int iWater = 400;
+    static int iMilk = 540;
+    static int iCoffeeB = 120;
+    static int iCups = 9;
+    static int iMoney = 550;
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-
+        CoffeeMachine.cCost = 0;
+        CoffeeMachine.cWater = 0;
+        CoffeeMachine.cMilk = 0;
+        CoffeeMachine.cCoffeeB = 0;
         storageMachine();
-        coffeeMake();
-        //calc();
+        System.out.println();
+        System.out.println("Write action (buy, fill, take): ");
+        String action = sc.nextLine();
+        switch (action) {
+            case "buy":
+                System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino: ");
+                int coffee = sc.nextInt();
+                switch (coffee) {
+                    case 1:
+                        espresso();
+                        makeCoffee();
+                        storageMachine();
+                        break;
+                    case 2:
+                        latte();
+                        makeCoffee();
+                        storageMachine();
+                        break;
+                    case 3:
+                        cappuccino();
+                        makeCoffee();
+                        storageMachine();
+                        break;
+                }
+                break;
+            case "fill":
+                addToMachine();
+                System.out.println();
+                storageMachine();
+                break;
+            case "take":
+                takeFromMachine();
+                System.out.println();
+                storageMachine();
+                break;
+        }
         /*System.out.println("Starting to make a coffee");
         System.out.println("Grinding coffee beans");
         System.out.println("Boiling water");
         System.out.println("Mixing boiled water with crushed coffee beans");
         System.out.println("Pouring coffee into the cup");
         System.out.println("Pouring some milk into the cup");
-        System.out.println("Coffee is ready!");*/
+        System.out.println("Coffee is ready!"); */
     }
-   /* static public void calc() {
+   static public void calc() {
         System.out.println("Write how many cups of coffee you will need:");
         CoffeeMachine.CoC = sc.nextInt();
         System.out.println("For " + CoffeeMachine.CoC + " cups of coffee you will need:");
@@ -32,19 +72,60 @@ public class CoffeeMachine {
         System.out.println(CoffeeMachine.CoC * CoffeeMachine.cMilk + " ml of milk");
         System.out.println(CoffeeMachine.CoC * CoffeeMachine.cCoffeeB + " g of coffee beans");
 
-    }*/
-
+    }
+    static public void espresso() {
+        CoffeeMachine.cWater = 250;
+        CoffeeMachine.cMilk = 0;
+        CoffeeMachine.cCoffeeB = 16;
+        CoffeeMachine.cCost = 4;
+    }
+    static public void latte() {
+        CoffeeMachine.cWater = 350;
+        CoffeeMachine.cMilk = 75;
+        CoffeeMachine.cCoffeeB = 20;
+        CoffeeMachine.cCost = 7;
+    }
+    static public void cappuccino() {
+        CoffeeMachine.cWater = 200;
+        CoffeeMachine.cMilk = 100;
+        CoffeeMachine.cCoffeeB = 12;
+        CoffeeMachine.cCost = 6;
+    }
+    static public void makeCoffee() {
+        CoffeeMachine.iWater -= CoffeeMachine.cWater;
+        CoffeeMachine.iMilk -= CoffeeMachine.cMilk;
+        CoffeeMachine.iCoffeeB -= CoffeeMachine.cCoffeeB;
+        CoffeeMachine.iCups -= CoffeeMachine.CoC;
+        CoffeeMachine.iMoney += CoffeeMachine.cCost;
+    }
+    static public void takeFromMachine() {
+        System.out.println("I gave you $" + iMoney);
+        iMoney -= iMoney;
+    }
     static public void storageMachine() {
-        System.out.println("Write how many ml of water the coffee machine has: ");
-        CoffeeMachine.iWater = sc.nextInt();
-        System.out.println("Write how many ml of milk the coffee machine has: ");
-        CoffeeMachine.iMilk = sc.nextInt();
-        System.out.println("Write how many grams of coffee beans the coffee machine has: ");
-        CoffeeMachine.iCoffeeB = sc.nextInt();
+        System.out.println("The coffee machine has:");
+        System.out.println(CoffeeMachine.iWater + " ml of water");
+        System.out.println(CoffeeMachine.iMilk + " ml of milk");
+        System.out.println(CoffeeMachine.iCoffeeB + " g of coffee beans");
+        System.out.println(CoffeeMachine.iCups + " disposable cups");
+        System.out.println("$" + CoffeeMachine.iMoney + " of money");
+    }
+
+    static public void addToMachine() {
+        System.out.println("Write how many ml of water you want to add:  ");
+        int addedWater = sc.nextInt();
+        CoffeeMachine.iWater += addedWater;
+        System.out.println("Write how many ml of milk you want to add:  ");
+        int addedMilk = sc.nextInt();
+        CoffeeMachine.iMilk += addedMilk;
+        System.out.println("Write how many grams of coffee beans you want to add:  ");
+        int addedCoffeeB = sc.nextInt();
+        CoffeeMachine.iCoffeeB += addedCoffeeB;
+        System.out.println("Write how many disposable cups of coffee you want to add: ");
+        int addedCups = sc.nextInt();
+        CoffeeMachine.iCups += addedCups;
     }
     static public void coffeeMake() {
-        System.out.println("Write how many cups of coffee you will need: ");
-        CoffeeMachine.CoC = sc.nextInt();
         boolean space = true;
         int waterForCoC = CoffeeMachine.CoC * CoffeeMachine.cWater;
         int milkForCoC = CoffeeMachine.CoC * CoffeeMachine.cMilk;
